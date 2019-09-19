@@ -8,10 +8,10 @@ exports.up = function(knex) {
     table.decimal('fish_length', 4, 2);
     table.text('lure_type');
     table.integer('hook_size');
-    table.integer('timestamp');
+    table.bigInteger('timestamp');
   });
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('fish_catch_data');
+  return knex.schema.dropTableIfExists('fish_catch_data');
 };
