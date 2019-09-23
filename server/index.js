@@ -6,34 +6,43 @@ const db = require('knex')(config);
 
 const app = express();
 const port = process.env.PORT || 3000;
+const routes = require('./routes');
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  db('fish_catch_data')
-    .then(data => {
-      res.send(data);
-    });
-});
+app.use('/', routes);
 
-app.post('/catch', (req, res) => {
-  //
-})
+// app.get('/', (req, res) => {
+//   //
+// })
 
-app.put('/catch/:fishId', (req, res) => {
-  const fishId = req.params.fishId;
-  //
-})
+// app.post('/catches', (req, res) => {
+//   //
+// })
 
-app.delete('/catch/:fishId', (req, res) => {
-  //
-})
+// app.put('/catches/:fishId', (req, res) => {
+//   const fishId = req.params.fishId;
+//   //
+// })
 
-app.get('/history', (req, res) => {
-  //
-})
+// app.delete('/catches/:fishId', (req, res) => {
+//   const fishId = req.params.fishId;
+//   db('fish_catch_data')
+//     .where({ id: fishId })
+//     .del()
+//     .then(() => {
+//       res.send('Deleted')
+//     })
+//     .catch(err => {
+//       console.error(err);
+//     })
+// })
+
+// app.get('/history', (req, res) => {
+//   //
+// })
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
