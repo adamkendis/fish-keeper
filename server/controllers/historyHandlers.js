@@ -2,7 +2,7 @@ const environment = process.env.NODE_ENV || 'development';
 const config = require('../../knexfile.js')[environment];
 const db = require('knex')(config);
 
-const historyControllers = {
+module.exports = {
 
   getAllFish: function(req, res) {
     db('fish_catch_data')
@@ -57,5 +57,3 @@ const historyControllers = {
   }
 
 }
-
-module.exports = historyControllers;
