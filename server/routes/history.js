@@ -4,7 +4,7 @@ const environment = process.env.NODE_ENV || 'development';
 const config = require('../../knexfile.js')[environment];
 const db = require('knex')(config);
 
-HistoryController.route('/?')
+HistoryController.route('/')
   .get(function(req, res){
     db('fish_catch_data')
       .then(data => {
@@ -15,11 +15,27 @@ HistoryController.route('/?')
         res.status(500).end();
       })
   })
-  .post(function(req, res){
+
+HistoryController.route('/:id')
+  .get(function(req, res){
+    let id = req.params.id
     db('fish_catch_data')
-      .insert(req.data)
+      .where({ id })
+      .then((data) => {
+        res.send(data);
+      })
+      .catch(err => {
+        console.error(err)
+        res.status(500).end();
+      })
+  })
+  .put(function(req, res){
+    let id = req.params.id;
+    db('fish_catch_data')
+      .where({ id })
+      .update(req.body.fishData)
       .then(() => {
-        res.status(200).send({message: 'Fish saved to database.'});
+        res.send('Updated');
       })
       .catch(err => {
         console.error(err);
@@ -27,9 +43,9 @@ HistoryController.route('/?')
       })
   })
   .delete(function(req, res){
-    let fishId = req.body.fish.id;
+    let id = req.params.id;
     db('fish_catch_data')
-      .where({ id: fishId })
+      .where({ id })
       .del()
       .then(() => {
         res.send('Deleted')
