@@ -6,13 +6,13 @@ const db = require('knex')(config);
 
 const app = express();
 const port = process.env.PORT || 3000;
-const routes = require('./routes');
+// const routes = require('./routes');
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', routes);
+require('./routes')(app);
 
 // app.get('/', (req, res) => {
 //   //
