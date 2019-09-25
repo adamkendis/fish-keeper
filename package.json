@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "db-migrate": "knex migrate:latest",
+    "build": "webpack --mode development --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,13 +20,32 @@
     "url": "https://github.com/adamkendis/fish-keeper/issues"
   },
   "homepage": "https://github.com/adamkendis/fish-keeper#readme",
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ]
+  },
   "dependencies": {
+    "axios": "^0.19.0",
     "express": "^4.17.1",
     "knex": "^0.19.4",
     "lodash": "^4.17.15",
-    "pg": "^7.12.1"
+    "pg": "^7.12.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   },
   "devDependencies": {
-    "faker": "^4.1.0"
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "faker": "^4.1.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
   }
 }
