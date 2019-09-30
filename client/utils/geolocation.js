@@ -12,4 +12,25 @@ export const createMap = (props, elementId, zoom=15) => {
   }).catch(err => {
     console.error(err);
   })
-}
+};
+
+export const getPosition = (options) => {
+  if (navigator.geolocation) {      
+    return new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, options));
+  } else {
+    return new Promise(resolve => resolve({}));
+  }
+};
+
+export const processPosition = (position) => {
+  let {latitude, longitude, altitude, accuracy, altitudeAccuracy, heading} = position.coords;
+  let timestamp = new Date(position.timestamp).toLocaleString();
+  let locInfo = {latitude, longitude, altitude, accuracy, altitudeAccuracy, heading, timestamp};
+  console.log(locInfo)
+  return locInfo;
+};
+
+
+
+
+
