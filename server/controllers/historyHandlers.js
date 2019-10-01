@@ -1,11 +1,9 @@
-const environment = process.env.NODE_ENV || 'development';
-const config = require('../../knexfile.js')[environment];
-const db = require('knex')(config);
+const Fish = require('../models/fish.js');
 
 module.exports = {
 
   getAllFish: function(req, res) {
-    db('fish_catch_data')
+    Fish.getAll()
       .then(data => {
         res.send(data);
       })
@@ -17,8 +15,7 @@ module.exports = {
 
   getFishById: function(req, res){
     let id = req.params.id
-    db('fish_catch_data')
-      .where({ id })
+    Fish.getOne(id)
       .then((data) => {
         res.send(data);
       })
@@ -30,9 +27,8 @@ module.exports = {
 
   updateFishById: function(req, res){
     let id = req.params.id;
-    db('fish_catch_data')
-      .where({ id })
-      .update(req.body.fishData)
+    let data = req.body;
+    Fish.updateOne(id, data)
       .then(() => {
         res.send('Updated');
       })
@@ -44,9 +40,7 @@ module.exports = {
 
   deleteFishById: function(req, res){
     let id = req.params.id;
-    db('fish_catch_data')
-      .where({ id })
-      .del()
+    Fish.deleteOne(id)
       .then(() => {
         res.send('Deleted')
       })

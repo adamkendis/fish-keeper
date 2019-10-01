@@ -1,13 +1,9 @@
-const environment = process.env.NODE_ENV || 'development';
-const config = require('../../knexfile.js')[environment];
-const db = require('knex')(config);
+const Fish = require('../models/fish.js');
 
 module.exports = {
   
   getRecentCatches: function(req, res) {
-    db('fish_catch_data')
-      .orderBy('timestamp', 'desc')
-      .limit(10)
+    Fish.getLastTen()
       .then(data => {
         res.send(data)
       })
@@ -17,10 +13,10 @@ module.exports = {
   },
 
   submitCatch: function(req, res) {
-    db('fish_catch_data')
-      .insert(req.body.fish)
-      .then(() => {
-        res.end();
+    const fish = req.body;
+    Fish.createOne(fish)
+      .then((data) => {
+        res.send('Finished');
       })
       .catch(err => {
         console.error(err);
