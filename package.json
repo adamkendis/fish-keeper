@@ -32,7 +32,8 @@
         {
           "regenerator": true
         }
-      ]
+      ],
+      "emotion"
     ]
   },
   "dependencies": {
@@ -47,7 +48,8 @@
     "material-table": "^1.51.0",
     "pg": "^7.12.1",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "react-spinners": "^0.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
