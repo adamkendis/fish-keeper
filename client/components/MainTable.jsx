@@ -1,4 +1,5 @@
 import React, { Component, forwardRef } from 'react';
+import Spinner from './Spinner.jsx';
 import MaterialTable from 'material-table';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -14,6 +15,7 @@ class MainTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       fish: [],
     };
   }
@@ -21,7 +23,10 @@ class MainTable extends Component {
   componentDidMount() {
     axios.get('/history')
       .then(res => {
-        this.setState({ fish: res.data })
+        this.setState({ 
+          loading: false,
+          fish: res.data,
+        })
       })
   }
 
@@ -39,21 +44,31 @@ class MainTable extends Component {
       ViewColumns: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
     };
 
+    const spinnerStyle = {
+      size: "75",
+      color: "blue",
+      loading: this.state.loading,
+    }
+
     return (
       <div>
-        <MaterialTable 
-          title="Catch History"
-          icons={tableIcons}
-          columns={[
-            { title: "Species", field: "fish_species" },
-            { title: "Length", field: "fish_length", type: "numeric" },
-            { title: "Fly Pattern", field: "lure_type" },
-            { title: "Hook Size", field: "hook_size" },
-            { title: "Latitude", field: "latitude" },
-            { title: "Longitude", field: "longitude" },
-          ]}
-          data={this.state.fish}
-        />
+        {
+          this.state.loading ? 
+            <Spinner {...spinnerStyle}/>  :
+            <MaterialTable 
+              title="Catch History"
+              icons={tableIcons}
+              columns={[
+                { title: "Species", field: "fish_species" },
+                { title: "Length", field: "fish_length", type: "numeric" },
+                { title: "Fly Pattern", field: "lure_type" },
+                { title: "Hook Size", field: "hook_size" },
+                { title: "Latitude", field: "latitude" },
+                { title: "Longitude", field: "longitude" },
+              ]}
+              data={this.state.fish}
+            />
+        }
       </div>
     )
   }
