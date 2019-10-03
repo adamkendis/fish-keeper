@@ -53,7 +53,6 @@ class MainTable extends Component {
             { title: "Longitude", field: "longitude" },
           ]}
           data={this.state.fish}
-        
         />
       </div>
     )
