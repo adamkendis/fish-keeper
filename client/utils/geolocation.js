@@ -26,11 +26,18 @@ export const getPosition = (options) => {
 
 export const processPosition = (position) => {
   let {latitude, longitude, altitude, accuracy, altitudeAccuracy, heading} = position.coords;
-  let timestamp = new Date(position.timestamp).toLocaleString();
+  let timestamp = position.timestamp;
   let locInfo = {latitude, longitude, altitude, accuracy, altitudeAccuracy, heading, timestamp};
   console.log(locInfo)
   return locInfo;
 };
+
+export const convertToLocalTime = DOMTimeStamp => {
+  const dateAndTime = new Date(DOMTimeStamp).toLocaleString();
+  const date = dateAndTime.split(', ')[0];
+  const time = dateAndTime.split(', ')[1];
+  return [date, time];
+}
 
 
 
