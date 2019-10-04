@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { getPosition, processPosition } from '../utils/geolocation';
@@ -9,15 +9,17 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
   },
   textField: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 200,
   }
-}))
+}));
 
 const CatchForm = () => {
   const classes = useStyles();
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     fish_species: '',
     fish_length: '',
     lure_type: '',
@@ -25,23 +27,31 @@ const CatchForm = () => {
     latitude: '',
     longitude: '',
     timestamp: '',
+    date: '',
+    time: '',
   });
 
-  const options = {
-    maximumAge: 15000,
-    enableHighAccuracy: true,
-    timeout: 15000,
-  }
-
-  // getPosition(options)
-  //   .then(position => {
-  //     const coords = processPosition(position);
-  //     setValues({ 
-  //       ...values, 
-  //       latitude: coords.latitude,
-  //       longitude: coords.longitude,
-  //     });
-  //   })
+  useEffect(() => {
+    const options = {
+      maximumAge: 1000,
+      enableHighAccuracy: true,
+      timeout: 15000,
+    };
+  
+    getPosition(options)
+      .then(position => {
+        const coords = processPosition(position);
+        const date = coords.timestamp.split(',')[0];
+        const time = coords.timestamp.split(', ')[1];
+        setValues({ 
+          ...values, 
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+          date,
+          time,
+        });
+      })
+  }, []);
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
@@ -57,14 +67,16 @@ const CatchForm = () => {
         onChange={handleChange('fish_species')}
         margin="normal"
       />
+      <br></br>
       <TextField 
         id="length-input"
-        label="Fish length"
+        label="Fish length (in)"
         className={classes.textField}
         value={values.fish_length}
         onChange={handleChange('fish_length')}
         margin="normal"
       />
+      <br></br>
       <TextField 
         id="lure-input"
         label="Fly/lure type"
@@ -73,6 +85,7 @@ const CatchForm = () => {
         onChange={handleChange('lure_type')}
         margin="normal"
       />
+      <br></br>
       <TextField 
         id="hook-size-input"
         label="Hook size"
@@ -81,6 +94,7 @@ const CatchForm = () => {
         onChange={handleChange('hook_size')}
         margin="normal"
       />
+      <br></br>
       <TextField
         disabled 
         id="latitude-input"
@@ -90,6 +104,7 @@ const CatchForm = () => {
         onChange={handleChange('latitude')}
         margin="normal"
       />
+      <br></br>
       <TextField
         disabled 
         id="longitude-input"
@@ -99,6 +114,25 @@ const CatchForm = () => {
         onChange={handleChange('longitude')}
         margin="normal"
       />
+      <br></br>
+      <TextField
+        id="date-input"
+        label="Date"
+        className={classes.textField}
+        value={values.date}
+        onChange={handleChange('date')}
+        margin="normal"
+      />
+      <br></br>
+      <TextField
+        id="time-input"
+        label="Time"
+        className={classes.textField}
+        value={values.time}
+        onChange={handleChange('time')}
+        margin="normal"
+      />
+      <br></br>
     </form>
   )
 }
