@@ -1,35 +1,38 @@
 import React from 'react';
+// import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
 import { makeStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import MainTable from './MainTable';
+// import Typography from '@material-ui/core/Typography';
+// import Box from '@material-ui/core/Box';
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+// import MainTable from './MainTable';
 
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      <Box p={3}>{children}</Box>
-    </Typography>
-  );
-}
+// function TabPanel(props) {
+//   const { children, value, index, ...other } = props;
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
+//   return (
+//     <Typography
+//       component="div"
+//       role="tabpanel"
+//       hidden={value !== index}
+//       id={`simple-tabpanel-${index}`}
+//       aria-labelledby={`simple-tab-${index}`}
+//       {...other}
+//     >
+//       <Box p={3}>{children}</Box>
+//     </Typography>
+//   );
+// }
+
+// TabPanel.propTypes = {
+//   children: PropTypes.node,
+//   index: PropTypes.any.isRequired,
+//   value: PropTypes.any.isRequired,
+// };
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,13 +52,23 @@ const NavBar = props => {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Tabs value={value} onChange={handleChange} centered={true}>
-        <Tab label="Submit a Catch" />
-        <Tab label="Explore" />
-        <Tab label="Charts" />
+        <Tabs 
+        value={value} 
+        onChange={handleChange} 
+        centered={true} 
+        >
+          <Tab label="Submit a Catch" 
+               component={Link} 
+               to="/catch"/>
+          <Tab label="Explore" 
+               component={Link}
+               to="/map" />
+          <Tab label="Graphs" 
+               component={Link}
+               to="/graphs" />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      {/* <TabPanel value={value} index={0}>
         SUBMIT CATCH COMPONENT
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -63,7 +76,7 @@ const NavBar = props => {
       </TabPanel>
       <TabPanel value={value} index={2}>
         CHARTS VIEW
-      </TabPanel>
+      </TabPanel> */}
     </div>
   );
 }
