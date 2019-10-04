@@ -18,7 +18,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CatchForm = () => {
+const CatchForm = (props) => {
+  console.log(props)
   const classes = useStyles();
   const [values, setValues] = useState({
     loading: true,
@@ -26,37 +27,13 @@ const CatchForm = () => {
     fish_length: '',
     lure_type: '',
     hook_size: '',
-    latitude: '',
-    longitude: '',
-    timestamp: '',
-    altitude: '',
-    date: '',
-    time: '',
+    latitude: props.latitude || '',
+    longitude: props.longitude || '',
+    timestamp: props.timestamp || '',
+    altitude: props.altitude || '',
+    date: props.date || '',
+    time: props.time || '',
   });
-  
-  useEffect(() => {
-    const options = {
-      maximumAge: 15000,
-      enableHighAccuracy: true,
-      timeout: 15000,
-    };
-    
-    getPosition(options)
-    .then(position => {
-      const coords = processPosition(position);
-      const date = coords.timestamp.split(',')[0];
-      const time = coords.timestamp.split(', ')[1];
-      setValues({ 
-        ...values, 
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-        altitude: coords.altitude || 'Not supported by device.',
-        date,
-        time,
-        loading: false,
-      });
-    })
-  }, []);
   
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
