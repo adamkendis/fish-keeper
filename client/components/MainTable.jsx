@@ -31,7 +31,6 @@ class MainTable extends Component {
   }
 
   render() {
-
     const tableIcons = {
       Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
       FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
@@ -41,13 +40,18 @@ class MainTable extends Component {
       ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
       Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
       SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
-      ViewColumns: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+      ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
     };
 
     const spinnerStyle = {
       size: "75",
       color: "blue",
       loading: this.state.loading,
+    }
+
+    const tableOptions = {
+      pageSize: 10,
+      columnsButton: true,
     }
 
     return (
@@ -66,6 +70,7 @@ class MainTable extends Component {
                 { title: "Latitude", field: "latitude" },
                 { title: "Longitude", field: "longitude" },
               ]}
+              options={tableOptions}
               data={this.state.fish}
             />
         }
