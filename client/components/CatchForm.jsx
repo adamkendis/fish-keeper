@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { getPosition, processPosition } from '../utils/geolocation';
+import Spinner from './Spinner';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -9,10 +10,10 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
   },
   textField: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginTop: theme.spacing(0),
+    marginBottom: theme.spacing(0),
+    marginLeft: theme.spacing(0),
+    marginRight: theme.spacing(0),
     width: 200,
   }
 }));
@@ -20,6 +21,7 @@ const useStyles = makeStyles(theme => ({
 const CatchForm = () => {
   const classes = useStyles();
   const [values, setValues] = useState({
+    loading: true,
     fish_species: '',
     fish_length: '',
     lure_type: '',
@@ -27,35 +29,44 @@ const CatchForm = () => {
     latitude: '',
     longitude: '',
     timestamp: '',
+    altitude: '',
     date: '',
     time: '',
   });
-
+  
   useEffect(() => {
     const options = {
-      maximumAge: 1000,
+      maximumAge: 15000,
       enableHighAccuracy: true,
       timeout: 15000,
     };
-  
+    
     getPosition(options)
-      .then(position => {
-        const coords = processPosition(position);
-        const date = coords.timestamp.split(',')[0];
-        const time = coords.timestamp.split(', ')[1];
-        setValues({ 
-          ...values, 
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-          date,
-          time,
-        });
-      })
+    .then(position => {
+      const coords = processPosition(position);
+      const date = coords.timestamp.split(',')[0];
+      const time = coords.timestamp.split(', ')[1];
+      setValues({ 
+        ...values, 
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        altitude: coords.altitude || 'Not supported by device.',
+        date,
+        time,
+        loading: false,
+      });
+    })
   }, []);
-
+  
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
+  
+  const spinnerStyle = {
+    size: "25",
+    color: "#42B4D1",
+    loading: values.loading,
+  }
 
   return (
     <form>
@@ -96,6 +107,33 @@ const CatchForm = () => {
       />
       <br></br>
       <TextField
+        id="date-input"
+        label="Date"
+        className={classes.textField}
+        value={values.date}
+        onChange={handleChange('date')}
+        margin="normal"
+      />
+      <br></br>
+      <TextField
+        id="time-input"
+        label="Time"
+        className={classes.textField}
+        value={values.time}
+        onChange={handleChange('time')}
+        margin="normal"
+      />
+      <br></br>
+      <TextField
+        id="altitude-input"
+        label="Altitude"
+        className={classes.textField}
+        value={values.altitude}
+        onChange={handleChange('altitude')}
+        margin="normal"
+      />
+      <br></br>
+      <TextField
         disabled 
         id="latitude-input"
         label="Latitude"
@@ -112,24 +150,6 @@ const CatchForm = () => {
         className={classes.textField}
         value={values.longitude}
         onChange={handleChange('longitude')}
-        margin="normal"
-      />
-      <br></br>
-      <TextField
-        id="date-input"
-        label="Date"
-        className={classes.textField}
-        value={values.date}
-        onChange={handleChange('date')}
-        margin="normal"
-      />
-      <br></br>
-      <TextField
-        id="time-input"
-        label="Time"
-        className={classes.textField}
-        value={values.time}
-        onChange={handleChange('time')}
         margin="normal"
       />
       <br></br>
