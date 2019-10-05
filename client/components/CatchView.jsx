@@ -4,6 +4,7 @@ import CatchForm from './CatchForm';
 import { getPosition, 
          processPosition,
          convertToLocalTime } from '../utils/geolocation';
+import axios from 'axios';
 
 class CatchView extends Component {
   constructor(props) {
@@ -17,7 +18,6 @@ class CatchView extends Component {
       time: '',
       zoom: 15,
     };
-    this.getLocation.bind(this);
   }
 
   getLocation = () => {
@@ -26,7 +26,6 @@ class CatchView extends Component {
       enableHighAccuracy: true,
       timeout: 15000,
     };
-
     getPosition(options)
       .then(position => {
         const coords = processPosition(position);
@@ -44,6 +43,17 @@ class CatchView extends Component {
       })
   }
 
+  handleLocationClick = (e) => {
+    e.preventDefault();
+    axios.post('/catch', this.state)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
   componentDidMount() {
     this.getLocation();
   }
@@ -54,9 +64,8 @@ class CatchView extends Component {
         <div className="catch-map-container" style={{ height: '40vh'}}>
           <GoogleMapReact 
             bootstrapURLKeys={{}}
-            center={{
-              lat: this.state.latitude,
-              lng: this.state.longitude }}
+            defaultCenter={[36.5785, -118.2923]}
+            center={[this.state.latitude, this.state.longitude]}
             zoom={this.state.zoom} 
           >
           </GoogleMapReact>
