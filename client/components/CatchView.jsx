@@ -22,24 +22,26 @@ class CatchView extends Component {
 
   getLocation = () => {
     const options = {
-      maximumAge: 15000,
+      maximumAge: 20000,
       enableHighAccuracy: true,
       timeout: 15000,
     };
+
     getPosition(options)
-    .then(position => {
-      const coords = processPosition(position);
-      const [ date, time ] = convertToLocalTime(coords.timestamp)
-      coords.date = date;
-      coords.time = time;
-      if (!coords.altitude) {
-        coords.altitude = 'Not supported on device.'
-      }
-      this.setState(coords);
-    })
-    .catch(err => {
-      console.error(err);
-    })
+      .then(position => {
+        const coords = processPosition(position);
+        const [ date, time ] = convertToLocalTime(coords.timestamp)
+        coords.date = date;
+        coords.time = time;
+        if (!coords.altitude) {
+          coords.altitude = 'Not supported on device.'
+        }
+        console.log(coords);
+        this.setState(coords);
+      })
+      .catch(err => {
+        console.error(err);
+      })
   }
 
   componentDidMount() {
