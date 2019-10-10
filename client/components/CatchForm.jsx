@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { getPosition, processPosition } from '../utils/geolocation';
-import Spinner from './Spinner';
+// import { getPosition, processPosition } from '../utils/geolocation';
+// import Spinner from './Spinner';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: 'block',
   },
   textField: {
     marginTop: theme.spacing(0),
@@ -19,7 +18,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CatchForm = (props) => {
-  console.log(props)
   const classes = useStyles();
   const [values, setValues] = useState({
     loading: true,
@@ -39,14 +37,14 @@ const CatchForm = (props) => {
     setValues({ ...values, [name]: event.target.value });
   };
   
-  const spinnerStyle = {
-    size: "25",
-    color: "#42B4D1",
-    loading: values.loading,
-  }
+  // const spinnerStyle = {
+  //   size: "25",
+  //   color: "#42B4D1",
+  //   loading: values.loading,
+  // }
 
   return (
-    <form>
+    <form className={classes.container}>
       <TextField 
         id="species-input"
         label="Species"
@@ -132,7 +130,6 @@ const CatchForm = (props) => {
       <br></br>
     </form>
   )
-}
-
+};
 
 export default CatchForm;
