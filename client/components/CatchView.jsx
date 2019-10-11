@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import CatchForm from './CatchForm';
+import SubmitButton from './SubmitButton';
 import { getPosition, 
          processPosition,
          convertToLocalTime } from '../utils/geolocation';
@@ -70,6 +71,9 @@ class CatchView extends Component {
           >
           </GoogleMapReact>
           <CatchForm { ...this.state }/>
+          <SubmitButton onClick={this.handleLocationClick} >
+            Submit
+          </SubmitButton>
         </div>
       </div>
 
