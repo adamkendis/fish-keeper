@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import SubmitButton from './SubmitButton';
+import { pick } from 'lodash';
+import axios from 'axios';
 // import { getPosition, processPosition } from '../utils/geolocation';
 // import Spinner from './Spinner';
 
@@ -36,6 +39,20 @@ const CatchForm = (props) => {
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
+
+  const handleLocationClick = e => {
+    e.preventDefault();
+    let keys = ['latitude', 'longitude', 'fish_species', 'fish_length', 'lure_type', 'hook_size', 'timestamp'];
+    let newCatch = pick(values, keys);
+    console.log(newCatch);
+    axios.post('/catch', values)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
   
   // const spinnerStyle = {
   //   size: "25",
@@ -128,6 +145,9 @@ const CatchForm = (props) => {
         margin="normal"
       />
       <br></br>
+      <SubmitButton onClick={handleLocationClick} >
+            Submit
+      </SubmitButton>
     </form>
   )
 };
