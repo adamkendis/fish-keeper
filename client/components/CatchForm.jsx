@@ -42,10 +42,10 @@ const CatchForm = (props) => {
 
   const handleLocationClick = e => {
     e.preventDefault();
-    let keys = ['latitude', 'longitude', 'fish_species', 'fish_length', 'lure_type', 'hook_size', 'timestamp'];
+    let keys = ['latitude', 'longitude', 'fish_species', 'fish_length', 'lure_type', 'hook_size'];
     let newCatch = pick(values, keys);
     console.log(newCatch);
-    axios.post('/catch', values)
+    axios.post('/catch', newCatch)
       .then(res => {
         console.log(res);
       })
