@@ -28,7 +28,6 @@ export const processPosition = (position) => {
   let {latitude, longitude, altitude, accuracy, altitudeAccuracy, heading} = position.coords;
   let timestamp = position.timestamp;
   let locInfo = {latitude, longitude, altitude, accuracy, altitudeAccuracy, heading, timestamp};
-  console.log(locInfo)
   return locInfo;
 };
 
