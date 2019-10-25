@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
 import SubmitButton from './SubmitButton';
 import { pick } from 'lodash';
 import axios from 'axios';
@@ -33,10 +34,10 @@ const CatchForm = (props) => {
     latitude: props.latitude || null,
     longitude: props.longitude || null,
     timestamp: props.timestamp || '',
-    altitude: props.altitude || '',
     timestamp: null,
-    date: props.date || '',
-    time: props.time || '',
+    // altitude: props.altitude || '',
+    // date: props.date || '',
+    // time: props.time || '',
   });
   
   const handleChange = name => event => {
@@ -67,7 +68,6 @@ const CatchForm = (props) => {
         let keys = ['fish_species', 'fish_length', 'lure_type', 'hook_size'];
         let catchInfo = pick(values, keys);
         let newCatch = Object.assign(catchInfo, coordinates);
-        console.log(newCatch);
         axios.post('/catch', newCatch)
           .then(res => {
             console.log(res);
@@ -152,6 +152,7 @@ const CatchForm = (props) => {
         value={values.altitude}
         onChange={handleChange('altitude')}
         margin="normal"
+        disabled
       />
       <br></br>
       <TextField
