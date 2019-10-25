@@ -63,18 +63,22 @@ const CatchForm = (props) => {
         let pickedCoords = pick(['latitude', 'longitude', 'timestamp'], coords);
         setCoords(pickedCoords);
       })
+      .then(() => {
+        let keys = ['fish_species', 'fish_length', 'lure_type', 'hook_size'];
+        let catchInfo = pick(values, keys);
+        let newCatch = Object.assign(catchInfo, coordinates);
+        console.log(newCatch);
+        axios.post('/catch', newCatch)
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      })
       .catch(err => {
         console.error(err);
       })
-    // let keys = ['latitude', 'longitude', 'fish_species', 'fish_length', 'lure_type', 'hook_size', 'timestamp'];
-    // let newCatch = pick(values, keys);
-    // axios.post('/catch', newCatch)
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //   })
   }
   
   // const spinnerStyle = {
@@ -128,6 +132,7 @@ const CatchForm = (props) => {
         value={values.date}
         onChange={handleChange('date')}
         margin="normal"
+        disabled
       />
       <br></br>
       <TextField
@@ -137,6 +142,7 @@ const CatchForm = (props) => {
         value={values.time}
         onChange={handleChange('time')}
         margin="normal"
+        disabled
       />
       <br></br>
       <TextField
