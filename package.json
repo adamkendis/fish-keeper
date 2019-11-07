@@ -43,7 +43,7 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "google-map-react": "^1.1.5",
-    "knex": "^0.19.4",
+    "knex": "^0.19.5",
     "load-google-maps-api": "^2.0.1",
     "lodash": "^4.17.15",
     "material-table": "^1.51.0",
