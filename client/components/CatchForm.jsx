@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
 import SubmitButton from './SubmitButton';
 import { pick } from 'lodash';
 import axios from 'axios';
-// import { getPosition, processPosition } from '../utils/geolocation';
+import { getPosition, processPosition, convertToLocalTime } from '../utils/geolocation';
 // import Spinner from './Spinner';
 
 const useStyles = makeStyles(theme => ({
@@ -28,12 +29,15 @@ const CatchForm = (props) => {
     fish_length: '',
     lure_type: '',
     hook_size: '',
-    latitude: props.latitude || '',
-    longitude: props.longitude || '',
+  });
+  const [coordinates, setCoords] = useState({
+    latitude: props.latitude || null,
+    longitude: props.longitude || null,
     timestamp: props.timestamp || '',
-    altitude: props.altitude || '',
-    date: props.date || '',
-    time: props.time || '',
+    timestamp: null,
+    // altitude: props.altitude || '',
+    // date: props.date || '',
+    // time: props.time || '',
   });
   
   const handleChange = name => event => {
@@ -42,12 +46,35 @@ const CatchForm = (props) => {
 
   const handleLocationClick = e => {
     e.preventDefault();
-    let keys = ['latitude', 'longitude', 'fish_species', 'fish_length', 'lure_type', 'hook_size'];
-    let newCatch = pick(values, keys);
-    console.log(newCatch);
-    axios.post('/catch', newCatch)
-      .then(res => {
-        console.log(res);
+    const options = {
+      maximumAge: 20000,
+      enableHighAccuracy: true,
+      timeout: 15000,
+    };
+    getPosition(options)
+      .then(position => {
+        const coords = processPosition(position);
+        const [ date, time ] = convertToLocalTime(coords.timestamp)
+        coords.date = date;
+        coords.time = time;
+        if (!coords.altitude) {
+          coords.altitude = 'Not supported on device.'
+        }
+        console.log(coords);
+        let pickedCoords = pick(['latitude', 'longitude', 'timestamp'], coords);
+        setCoords(pickedCoords);
+      })
+      .then(() => {
+        let keys = ['fish_species', 'fish_length', 'lure_type', 'hook_size'];
+        let catchInfo = pick(values, keys);
+        let newCatch = Object.assign(catchInfo, coordinates);
+        axios.post('/catch', newCatch)
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.error(err);
+          })
       })
       .catch(err => {
         console.error(err);
@@ -105,6 +132,7 @@ const CatchForm = (props) => {
         value={values.date}
         onChange={handleChange('date')}
         margin="normal"
+        disabled
       />
       <br></br>
       <TextField
@@ -114,6 +142,7 @@ const CatchForm = (props) => {
         value={values.time}
         onChange={handleChange('time')}
         margin="normal"
+        disabled
       />
       <br></br>
       <TextField
@@ -123,6 +152,7 @@ const CatchForm = (props) => {
         value={values.altitude}
         onChange={handleChange('altitude')}
         margin="normal"
+        disabled
       />
       <br></br>
       <TextField
