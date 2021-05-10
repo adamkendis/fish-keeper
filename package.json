@@ -45,7 +45,7 @@
     "google-map-react": "^1.1.5",
     "knex": "^0.19.5",
     "load-google-maps-api": "^2.0.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "material-table": "^1.51.0",
     "pg": "^7.12.1",
     "prop-types": "^15.7.2",
